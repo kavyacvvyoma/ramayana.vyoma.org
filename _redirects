@@ -1,0 +1,3 @@
+# Netlify / Vercel redirect rule
+# Serves index.html for ALL routes so react-router handles client-side routing
+/*    /index.html    200
