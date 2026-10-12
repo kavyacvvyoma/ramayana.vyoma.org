@@ -3,48 +3,13 @@
 //  Fonts: Poppins (body/UI) · Yatra One (hero h1) · Cinzel (section h2/h3)
 //  Buttons: uniform tinted transparent bg across all variants
 // ════════════════════════════════════════════════════════════════════════════
-import { useState, useRef, useCallback } from "react";
-import { C, F, BHAJAN_SYMBOLS } from "./01_theme";
-
-// ─── Bhajan Particle Engine ───────────────────────────────────────────────────
-function useBhajanParticles() {
-  const [particles, setParticles] = useState([]);
-  const lastTime = useRef(0);
-  const spawnParticle = useCallback((x, y) => {
-    const now = Date.now();
-    if (now - lastTime.current < 150) return;
-    lastTime.current = now;
-    const id = now + Math.random();
-    const symbol = BHAJAN_SYMBOLS[Math.floor(Math.random() * BHAJAN_SYMBOLS.length)];
-    const offsetX = (Math.random() - 0.5) * 50;
-    setParticles(p => [...p.slice(-12), { id, x: x + offsetX, y, symbol }]);
-    setTimeout(() => setParticles(p => p.filter(pt => pt.id !== id)), 1100);
-  }, []);
-  return { particles, spawnParticle };
-}
-
-function BhajanParticles({ particles }) {
-  return (
-    <>
-      {particles.map(p => (
-        <div key={p.id} className="bhajan-particle" style={{ left: p.x, top: p.y - 10 }}>
-          <span style={{
-            fontFamily: F.devan, fontSize: 12, fontWeight: 700,
-            color: C.accent, whiteSpace: "nowrap", opacity: 0.85,
-          }}>{p.symbol}</span>
-        </div>
-      ))}
-    </>
-  );
-}
+import { C, F } from "./01_theme";
 
 // ─── SpiritualHero ────────────────────────────────────────────────────────────
+// Plain wrapper — no mouse tracking, no particles
 export function SpiritualHero({ children, minHeight = "auto", style = {} }) {
-  const { particles, spawnParticle } = useBhajanParticles();
   return (
-    <div onMouseMove={e => spawnParticle(e.clientX, e.clientY)}
-      style={{ position: "relative", minHeight, ...style }}>
-      <BhajanParticles particles={particles} />
+    <div style={{ position: "relative", minHeight, ...style }}>
       {children}
     </div>
   );
@@ -106,7 +71,7 @@ export function Tag({ children }) {
 // primary   → accent tinted bg + accent border + accent text
 // secondary → green tinted bg + green border + green text
 // ghost     → ink tinted bg + ink border + ink text
-export function Btn({ children, onClick, variant = "primary", color, style = {} }) {
+export function Btn({ children, onClick, variant = "primary", style = {} }) {
   const configs = {
     primary:   { col: C.accent, bg: `${C.accent}18`, border: `${C.accent}60` },
     secondary: { col: C.green,  bg: `${C.green}18`,  border: `${C.green}60`  },
@@ -132,51 +97,11 @@ export function Btn({ children, onClick, variant = "primary", color, style = {} 
   );
 }
 
-// ─── PageHdr — unified hero header (single source of truth for all pages) ────
-// All pages share identical: padding, font-sizes, font-families, accent rule.
-// Do NOT override these in individual pages.
+// ─── PageHdr — unified hero header ─────────────────────────────────────────────
+// The visual hero section has been removed per request. 
+// This now only returns a spacer for the fixed navbar.
 export function PageHdr({ title, subtitle }) {
-  return (
-    <SpiritualHero style={{
-      background: C.surface,
-      padding: "110px clamp(20px,5vw,48px) 28px",
-      textAlign: "center", position: "relative", overflow: "hidden",
-      borderBottom: `1px solid ${C.inkGhost}`,
-      minHeight: 180,
-    }}>
-      {/* Saffron top stripe */}
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: C.accent }} />
-      {/* Devanagari watermark */}
-      <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        fontFamily: F.devan, fontSize: 160, fontWeight: 700,
-        color: C.accent, opacity: 0.03, userSelect: "none", letterSpacing: 8,
-      }}>रामायण</div>
-      <div style={{ position: "relative", zIndex: 1 }}>
-        <h1 style={{
-          fontFamily: "'Cinzel', serif",
-          color: C.ink,
-          fontSize: 32,
-          fontWeight: 700,
-          letterSpacing: 2,
-          lineHeight: 1.2,
-          margin: 0,
-        }}>{title}</h1>
-        {subtitle && (
-          <p style={{
-            fontFamily: "'Poppins', sans-serif",
-            color: C.inkLight,
-            fontSize: 14,
-            marginTop: 8,
-            fontStyle: "italic",
-            letterSpacing: 0.3,
-          }}>{subtitle}</p>
-        )}
-        <div style={{ width: 40, height: 2, background: C.accent, margin: "14px auto 0", borderRadius: 2 }} />
-      </div>
-    </SpiritualHero>
-  );
+  return <div style={{ height: 90 }} />;
 }
 
 // ─── SectionTitle ─────────────────────────────────────────────────────────────

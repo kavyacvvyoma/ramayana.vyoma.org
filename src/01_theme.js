@@ -1,91 +1,89 @@
 // ════════════════════════════════════════════════════════════════════════════
-//  01_theme.js  —  GLOBAL THEME  (Calm · Minimal · Editorial)
-//  Fonts: Poppins (body/UI) · Yatra One (hero headings) · Cinzel (section heads)
-//  Noto Serif Devanagari (Sanskrit) · Futura (quotes/italic)
+//  01_theme.js  —  GLOBAL THEME  (Warm Saffron + Crimson — NO GREEN)
+//  Fonts: Poppins · Yatra One · Cinzel · Noto Serif Devanagari · Futura
 // ════════════════════════════════════════════════════════════════════════════
 
 export const C = {
-  pageBg:    "#FDFAF4",
-  cardBg:    "#FFFFFF",
-  surface:   "#FDF6EB",
-  surfaceAlt:"#F7EFE0",
+  pageBg: "#FDFAF4",
+  cardBg: "#FFFFFF",
+  surface: "#FDF6EB",
+  surfaceAlt: "#F7EFE0",
 
-  accent:    "#C8551A",
+  accent: "#C8551A",
   accentMid: "#E07035",
-  accentSoft:"#F2C49A",
-  accentBg:  "#FEF2E8",
+  accentSoft: "#F2C49A",
+  accentBg: "#FEF2E8",
 
-  green:     "#2D6A4F",
-  greenHover:"#1B4332",
+  // Replaced all green with a deep crimson / maroon secondary
+  green: "#8B1A1A",   // was #2D6A4F  — now deep crimson
+  greenHover: "#6B1111",   // was #1B4332  — now darker crimson
 
-  ink:       "#2A1A0A",
-  inkMid:    "#4A2C14",
-  inkLight:  "#7A5230",
-  inkFaint:  "#A87850",
-  inkGhost:  "#D4B090",
+  ink: "#2A1A0A",
+  inkMid: "#4A2C14",
+  inkLight: "#7A5230",
+  inkFaint: "#A87850",
+  inkGhost: "#D4B090",
 
-  // ── Backward-compat aliases ────────────────────────────────────────────────
-  orange1:   "#C8551A",
-  orange2:   "#E07035",
-  orange3:   "#F2C49A",
-  orange4:   "#F2C49A",
-  orange5:   "#FEF2E8",
-  orange6:   "#FDFAF4",
-  yellow1:   "#C8551A",
-  yellow2:   "#C8551A",
-  yellow3:   "#FEF2E8",
-  yellow4:   "#FDFAF4",
-  btnBg:     "#2D6A4F",
-  btnHover:  "#1B4332",
-  btnText:   "#FFFFFF",
-  brown1:    "#2A1A0A",
-  brown2:    "#4A2C14",
-  brown3:    "#7A5230",
-  brown4:    "#A87850",
-  green1:    "#2D6A4F",
-  green2:    "#40916C",
-  green3:    "#74C69D",
-  green4:    "#D8F3DC",
-  teal:      "#2D6A4F",
-  tealLight: "#40916C",
-  crimson:   "#2A1A0A",
-  crimsonL:  "#4A2C14",
-  indigo:    "#2A1A0A",
-  indigoL:   "#4A2C14",
-  gold:      "#C8551A",
-  goldL:     "#E07035",
-  textDark:  "#2A1A0A",
-  textMid:   "#4A2C14",
+  // ── Backward-compat aliases (all green→crimson) ────────────────────────────
+  orange1: "#C8551A",
+  orange2: "#E07035",
+  orange3: "#F2C49A",
+  orange4: "#F2C49A",
+  orange5: "#FEF2E8",
+  orange6: "#FDFAF4",
+  yellow1: "#C8551A",
+  yellow2: "#C8551A",
+  yellow3: "#FEF2E8",
+  yellow4: "#FDFAF4",
+  btnBg: "#8B1A1A",   // buttons: deep crimson instead of green
+  btnHover: "#6B1111",
+  btnText: "#FFFFFF",
+  brown1: "#2A1A0A",
+  brown2: "#4A2C14",
+  brown3: "#7A5230",
+  brown4: "#A87850",
+  green1: "#8B1A1A",   // all green shades → crimson family
+  green2: "#B22222",
+  green3: "#CD5C5C",
+  green4: "#FAD7D7",
+  teal: "#8B1A1A",   // teal → crimson
+  tealLight: "#B22222",
+  crimson: "#2A1A0A",
+  crimsonL: "#4A2C14",
+  indigo: "#2A1A0A",
+  indigoL: "#4A2C14",
+  gold: "#C8551A",
+  goldL: "#E07035",
+  textDark: "#2A1A0A",
+  textMid: "#4A2C14",
   textLight: "#7A5230",
   textMuted: "#A87850",
-  white:     "#FFFFFF",
-  accent1:   "#C8551A",
-  brown:     "#2A1A0A",
-  brownLight:"#4A2C14",
-  yellowSoft:"#FEF2E8",
-  cream:     "#FDFAF4",
+  white: "#FFFFFF",
+  accent1: "#C8551A",
+  brown: "#2A1A0A",
+  brownLight: "#4A2C14",
+  yellowSoft: "#FEF2E8",
+  cream: "#FDFAF4",
   gradStart: "#C8551A",
 };
 
 // ── Font family constants ─────────────────────────────────────────────────────
 export const F = {
-  body:    "'Poppins', sans-serif",         // ALL body text, UI labels, descriptions
-  heading: "'Cinzel', serif",               // Section headings (h2, h3 in body)
-  hero:    "'Yatra One', serif",            // Hero section headings ONLY (h1 in heroes)
-  sans:    "'Poppins', sans-serif",         // Alias for body
-  devan:   "'Noto Serif Devanagari', serif",// Sanskrit text
-  serif:   "'Futura', 'Trebuchet MS', sans-serif",   // Pull quotes, italic captions
+  body: "'Noto Serif', 'Shobhika', serif",
+  heading: "'Noto Serif', 'Shobhika', serif",
+  hero: "'Noto Serif', 'Shobhika', serif",
+  sans: "'Noto Serif', 'Shobhika', serif",
+  devan: "'Shobhika', 'Noto Serif Devanagari', serif",
+  serif: "'Noto Serif', 'Shobhika', serif",
 };
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
 export const NAV_ITEMS = [
-  "Home", "Events", "Learn", "Get Certified", "Resources", "Get Involved", "View",
+  "Home", "Know Rāmāyaṇa", "Daily Satsaṅga", "Learn Rāmāyaṇa", "Resources", "Events", "Get Involved",
 ];
 
 export const FEATURED_EVENT_ACTIVE = true;
-export const FEATURED_EVENT_LABEL  = "Learn";
-
-// Order: Home, Events, Learn, Get Certified (featured), Resources, Get Involved, View
+export const FEATURED_EVENT_LABEL = "Learn";
 export const ALL_NAV = NAV_ITEMS;
 
 export const BHAJAN_SYMBOLS = [
@@ -94,14 +92,23 @@ export const BHAJAN_SYMBOLS = [
 ];
 
 export const GLOBAL_CSS = `
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Yatra+One&family=Cinzel:wght@400;600;700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+Devanagari:wght@400;600;700&display=swap');
+  @import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css');
+
+  @font-face {
+    font-family: 'Shobhika';
+    font-style: normal;
+    font-weight: normal;
+    font-display: swap;
+    src: url('/Shobhika-Regular.otf') format('opentype');
+  }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
     background: #FDFAF4;
     color: #2A1A0A;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Noto Serif', serif;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -119,7 +126,7 @@ export const GLOBAL_CSS = `
 
   .pi  { animation: fadeUp 0.45s ease forwards; }
   .fl  { animation: float 3.5s ease-in-out infinite; }
-  .bt  { transition: all 0.17s ease; cursor: pointer; font-family: 'Poppins', sans-serif; }
+  .bt  { transition: all 0.17s ease; cursor: pointer; font-family: 'Noto Serif', serif; }
   .bt:hover { filter: brightness(1.07); }
   .hl  { transition: transform 0.2s ease, box-shadow 0.2s ease; }
   .hl:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(42,26,10,0.09) !important; }
@@ -130,4 +137,33 @@ export const GLOBAL_CSS = `
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: #FDF6EB; }
   ::-webkit-scrollbar-thumb { background: #C8551A; border-radius: 3px; }
+
+  .quiz-explanation-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    background: #FDF6EB;
+    padding: 16px 20px;
+    border-left: 4px solid #C8551A;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 24px;
+    animation: fadeUp 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+
+  @media (max-width: 600px) {
+    .quiz-explanation-card-header {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+    }
+    .quiz-explanation-card-header > div:last-child {
+      width: 100%;
+    }
+    .quiz-explanation-card-header > div:last-child button {
+      width: 100% !important;
+      display: block;
+    }
+  }
 `;

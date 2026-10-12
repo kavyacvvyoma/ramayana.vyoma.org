@@ -1,0 +1,405 @@
+{
+  "base_url": "https://ramayanasatsanga.s3.amazonaws.com/Sanksheparamayana/",
+  "days": {
+    "1": {
+      "chanting": "chanting/Day01Verse01/playlist.m3u8",
+      "meaning": "meaning/Day01Verse01/playlist.m3u8"
+    },
+    "2": {
+      "chanting": "chanting/Day02Verse02/playlist.m3u8",
+      "meaning": "meaning/Day02Verse02/playlist.m3u8"
+    },
+    "3": {
+      "chanting": "chanting/Day03Verse03/playlist.m3u8",
+      "meaning": "meaning/Day03Verse03/playlist.m3u8"
+    },
+    "5": {
+      "chanting": "chanting/Day05Verse04/playlist.m3u8",
+      "meaning": "meaning/Day05Verse04/playlist.m3u8"
+    },
+    "6": {
+      "chanting": "chanting/Day06Verse05/playlist.m3u8",
+      "meaning": "meaning/Day06Verse05/playlist.m3u8"
+    },
+    "7": {
+      "chanting": "chanting/Day07Verse06/playlist.m3u8",
+      "meaning": "meaning/Day07Verse06/playlist.m3u8"
+    },
+    "8": {
+      "chanting": "chanting/Day08Verse07/playlist.m3u8",
+      "meaning": "meaning/Day08Verse07/playlist.m3u8"
+    },
+    "9": {
+      "chanting": "chanting/Day09Verse08/playlist.m3u8",
+      "meaning": "meaning/Day09Verse08/playlist.m3u8"
+    },
+    "10": {
+      "chanting": "chanting/Day10Verse09/playlist.m3u8",
+      "meaning": "meaning/Day10Verse09/playlist.m3u8"
+    },
+    "12": {
+      "chanting": "chanting/Day12Verse10/playlist.m3u8",
+      "meaning": "meaning/Day12Verse10/playlist.m3u8"
+    },
+    "13": {
+      "chanting": "chanting/Day13Verse11/playlist.m3u8",
+      "meaning": "meaning/Day13Verse11/playlist.m3u8"
+    },
+    "14": {
+      "chanting": "chanting/Day14Verse12/playlist.m3u8",
+      "meaning": "meaning/Day14Verse12/playlist.m3u8"
+    },
+    "15": {
+      "chanting": "chanting/Day15Verse13/playlist.m3u8",
+      "meaning": "meaning/Day15Verse13/playlist.m3u8"
+    },
+    "16": {
+      "chanting": "chanting/Day16Verse14/playlist.m3u8",
+      "meaning": "meaning/Day16Verse14/playlist.m3u8"
+    },
+    "17": {
+      "chanting": "chanting/Day18Verse15/playlist.m3u8",
+      "meaning": "meaning/Day18Verse15/playlist.m3u8"
+    },
+    "19": {
+      "chanting": "chanting/Day19Verse16/playlist.m3u8",
+      "meaning": "meaning/Day19Verse16/playlist.m3u8"
+    },
+    "20": {
+      "chanting": "chanting/Day20Verse17/playlist.m3u8",
+      "meaning": "meaning/Day20Verse17/playlist.m3u8"
+    },
+    "21": {
+      "chanting": "chanting/Day21Verse18/playlist.m3u8",
+      "meaning": "meaning/Day21Verse18/playlist.m3u8"
+    },
+    "22": {
+      "chanting": "chanting/Day22Verse19/playlist.m3u8",
+      "meaning": "meaning/Day22Verse19/playlist.m3u8"
+    },
+    "23": {
+      "chanting": "chanting/Day23Verse20/playlist.m3u8",
+      "meaning": "meaning/Day23Verse20/playlist.m3u8"
+    },
+    "24": {
+      "chanting": "chanting/Day25Verse21/playlist.m3u8",
+      "meaning": "meaning/Day25Verse21/playlist.m3u8"
+    },
+    "26": {
+      "chanting": "chanting/Day26Verse22/playlist.m3u8",
+      "meaning": "meaning/Day26Verse22/playlist.m3u8"
+    },
+    "27": {
+      "chanting": "chanting/Day27Verse23/playlist.m3u8",
+      "meaning": "meaning/Day27Verse23/playlist.m3u8"
+    },
+    "28": {
+      "chanting": "chanting/Day28Verse24/playlist.m3u8",
+      "meaning": "meaning/Day28Verse24/playlist.m3u8"
+    },
+    "29": {
+      "chanting": "chanting/Day29Verse25/playlist.m3u8",
+      "meaning": "meaning/Day29Verse25/playlist.m3u8"
+    },
+    "30": {
+      "chanting": "chanting/Day30Verse26/playlist.m3u8",
+      "meaning": "meaning/Day30Verse26/playlist.m3u8"
+    },
+    "31": {
+      "chanting": "chanting/Day32Verse27/playlist.m3u8",
+      "meaning": "meaning/Day32Verse27/playlist.m3u8"
+    },
+    "33": {
+      "chanting": "chanting/Day33Verse28/playlist.m3u8",
+      "meaning": "meaning/Day33Verse28/playlist.m3u8"
+    },
+    "34": {
+      "chanting": "chanting/Day34Verse29/playlist.m3u8",
+      "meaning": "meaning/Day34Verse29/playlist.m3u8"
+    },
+    "35": {
+      "chanting": "chanting/Day35Verse30/playlist.m3u8",
+      "meaning": "meaning/Day35Verse30/playlist.m3u8"
+    },
+    "36": {
+      "chanting": "chanting/Day36Verse31/playlist.m3u8",
+      "meaning": "meaning/Day36Verse31/playlist.m3u8"
+    },
+    "37": {
+      "chanting": "chanting/Day37Verse32/playlist.m3u8",
+      "meaning": "meaning/Day37Verse32/playlist.m3u8"
+    },
+    "38": {
+      "chanting": "chanting/Day39Verse33/playlist.m3u8",
+      "meaning": "meaning/Day39Verse33/playlist.m3u8"
+    },
+    "40": {
+      "chanting": "chanting/Day40Verse34/playlist.m3u8",
+      "meaning": "meaning/Day40Verse34/playlist.m3u8"
+    },
+    "41": {
+      "chanting": "chanting/Day41Verse35/playlist.m3u8",
+      "meaning": "meaning/Day41Verse35/playlist.m3u8"
+    },
+    "42": {
+      "chanting": "chanting/Day42Verse36/playlist.m3u8",
+      "meaning": "meaning/Day42Verse36/playlist.m3u8"
+    },
+    "43": {
+      "chanting": "chanting/Day43Verse37/playlist.m3u8",
+      "meaning": "meaning/Day43Verse37/playlist.m3u8"
+    },
+    "44": {
+      "chanting": "chanting/Day44Verse38/playlist.m3u8",
+      "meaning": "meaning/Day44Verse38/playlist.m3u8"
+    },
+    "45": {
+      "chanting": "chanting/Day46Verse39/playlist.m3u8",
+      "meaning": "meaning/Day46Verse39/playlist.m3u8"
+    },
+    "47": {
+      "chanting": "chanting/Day47Verse40/playlist.m3u8",
+      "meaning": "meaning/Day47Verse40/playlist.m3u8"
+    },
+    "48": {
+      "chanting": "chanting/Day48Verse41/playlist.m3u8",
+      "meaning": "meaning/Day48Verse41/playlist.m3u8"
+    },
+    "49": {
+      "chanting": "chanting/Day49Verse42/playlist.m3u8",
+      "meaning": "meaning/Day49Verse42/playlist.m3u8"
+    },
+    "50": {
+      "chanting": "chanting/Day50Verse43/playlist.m3u8",
+      "meaning": "meaning/Day50Verse43/playlist.m3u8"
+    },
+    "51": {
+      "chanting": "chanting/Day51Verse44/playlist.m3u8",
+      "meaning": "meaning/Day51Verse44/playlist.m3u8"
+    },
+    "52": {
+      "chanting": "chanting/Day53Verse45/playlist.m3u8",
+      "meaning": "meaning/Day53Verse45/playlist.m3u8"
+    },
+    "54": {
+      "chanting": "chanting/Day54Verse46/playlist.m3u8",
+      "meaning": "meaning/Day54Verse46/playlist.m3u8"
+    },
+    "55": {
+      "chanting": "chanting/Day55Verse47/playlist.m3u8",
+      "meaning": "meaning/Day55Verse47/playlist.m3u8"
+    },
+    "56": {
+      "chanting": "chanting/Day56Verse48/playlist.m3u8",
+      "meaning": "meaning/Day56Verse48/playlist.m3u8"
+    },
+    "57": {
+      "chanting": "chanting/Day57Verse49/playlist.m3u8",
+      "meaning": "meaning/Day57Verse49/playlist.m3u8"
+    },
+    "58": {
+      "chanting": "chanting/Day58Verse50/playlist.m3u8",
+      "meaning": "meaning/Day58Verse50/playlist.m3u8"
+    },
+    "59": {
+      "chanting": "chanting/Day60Verse51/playlist.m3u8",
+      "meaning": "meaning/Day60Verse51/playlist.m3u8"
+    },
+    "61": {
+      "chanting": "chanting/Day61Verse52/playlist.m3u8",
+      "meaning": "meaning/Day61Verse52/playlist.m3u8"
+    },
+    "62": {
+      "chanting": "chanting/Day62Verse53/playlist.m3u8",
+      "meaning": "meaning/Day62Verse53/playlist.m3u8"
+    },
+    "63": {
+      "chanting": "chanting/Day63Verse54/playlist.m3u8",
+      "meaning": "meaning/Day63Verse54/playlist.m3u8"
+    },
+    "64": {
+      "chanting": "chanting/Day64Verse55/playlist.m3u8",
+      "meaning": "meaning/Day64Verse55/playlist.m3u8"
+    },
+    "65": {
+      "chanting": "chanting/Day65Verse56/playlist.m3u8",
+      "meaning": "meaning/Day65Verse56/playlist.m3u8"
+    },
+    "66": {
+      "chanting": "chanting/Day67Verse57/playlist.m3u8",
+      "meaning": "meaning/Day67Verse57/playlist.m3u8"
+    },
+    "68": {
+      "chanting": "chanting/Day68Verse58/playlist.m3u8",
+      "meaning": "meaning/Day68Verse58/playlist.m3u8"
+    },
+    "69": {
+      "chanting": "chanting/Day69Verse59/playlist.m3u8",
+      "meaning": "meaning/Day69Verse59/playlist.m3u8"
+    },
+    "70": {
+      "chanting": "chanting/Day70Verse60/playlist.m3u8",
+      "meaning": "meaning/Day70Verse60/playlist.m3u8"
+    },
+    "71": {
+      "chanting": "chanting/Day71Verse61/playlist.m3u8",
+      "meaning": "meaning/Day71Verse61/playlist.m3u8"
+    },
+    "72": {
+      "chanting": "chanting/Day72Verse62/playlist.m3u8",
+      "meaning": "meaning/Day72Verse62/playlist.m3u8"
+    },
+    "73": {
+      "chanting": "chanting/Day74Verse63/playlist.m3u8",
+      "meaning": "meaning/Day74Verse63/playlist.m3u8"
+    },
+    "75": {
+      "chanting": "chanting/Day75Verse64/playlist.m3u8",
+      "meaning": "meaning/Day75Verse64/playlist.m3u8"
+    },
+    "76": {
+      "chanting": "chanting/Day76Verse65/playlist.m3u8",
+      "meaning": "meaning/Day76Verse65/playlist.m3u8"
+    },
+    "77": {
+      "chanting": "chanting/Day77Verse66/playlist.m3u8",
+      "meaning": "meaning/Day77Verse66/playlist.m3u8"
+    },
+    "78": {
+      "chanting": "chanting/Day78Verse67/playlist.m3u8",
+      "meaning": "meaning/Day78Verse67/playlist.m3u8"
+    },
+    "79": {
+      "chanting": "chanting/Day79Verse68/playlist.m3u8",
+      "meaning": "meaning/Day79Verse68/playlist.m3u8"
+    },
+    "80": {
+      "chanting": "chanting/Day81Verse69/playlist.m3u8",
+      "meaning": "meaning/Day81Verse69/playlist.m3u8"
+    },
+    "82": {
+      "chanting": "chanting/Day82Verse70/playlist.m3u8",
+      "meaning": "meaning/Day82Verse70/playlist.m3u8"
+    },
+    "83": {
+      "chanting": "chanting/Day83Verse71/playlist.m3u8",
+      "meaning": "meaning/Day83Verse71/playlist.m3u8"
+    },
+    "84": {
+      "chanting": "chanting/Day84Verse72/playlist.m3u8",
+      "meaning": "meaning/Day84Verse72/playlist.m3u8"
+    },
+    "85": {
+      "chanting": "chanting/Day85Verse73/playlist.m3u8",
+      "meaning": "meaning/Day85Verse73/playlist.m3u8"
+    },
+    "86": {
+      "chanting": "chanting/Day86Verse74/playlist.m3u8",
+      "meaning": "meaning/Day86Verse74/playlist.m3u8"
+    },
+    "87": {
+      "chanting": "chanting/Day88Verse75/playlist.m3u8",
+      "meaning": "meaning/Day88Verse75/playlist.m3u8"
+    },
+    "89": {
+      "chanting": "chanting/Day89Verse76/playlist.m3u8",
+      "meaning": "meaning/Day89Verse76/playlist.m3u8"
+    },
+    "90": {
+      "chanting": "chanting/Day90Verse77/playlist.m3u8",
+      "meaning": "meaning/Day90Verse77/playlist.m3u8"
+    },
+    "91": {
+      "chanting": "chanting/Day91Verse78/playlist.m3u8",
+      "meaning": "meaning/Day91Verse78/playlist.m3u8"
+    },
+    "92": {
+      "chanting": "chanting/Day92Verse79/playlist.m3u8",
+      "meaning": "meaning/Day92Verse79/playlist.m3u8"
+    },
+    "93": {
+      "chanting": "chanting/Day93Verse80/playlist.m3u8",
+      "meaning": "meaning/Day93Verse80/playlist.m3u8"
+    },
+    "94": {
+      "chanting": "chanting/Day95Verse81/playlist.m3u8",
+      "meaning": "meaning/Day95Verse81/playlist.m3u8"
+    },
+    "96": {
+      "chanting": "chanting/Day96Verse82/playlist.m3u8",
+      "meaning": "meaning/Day96Verse82/playlist.m3u8"
+    },
+    "97": {
+      "chanting": "chanting/Day97Verse83/playlist.m3u8",
+      "meaning": "meaning/Day97Verse83/playlist.m3u8"
+    },
+    "98": {
+      "chanting": "chanting/Day98Verse84/playlist.m3u8",
+      "meaning": "meaning/Day98Verse84/playlist.m3u8"
+    },
+    "99": {
+      "chanting": "chanting/Day99Verse85/playlist.m3u8",
+      "meaning": "meaning/Day99Verse85/playlist.m3u8"
+    },
+    "100": {
+      "chanting": "chanting/Day100Verse86/playlist.m3u8",
+      "meaning": "meaning/Day100Verse86/playlist.m3u8"
+    },
+    "101": {
+      "chanting": "chanting/Day102Verse87/playlist.m3u8",
+      "meaning": "meaning/Day102Verse87/playlist.m3u8"
+    },
+    "103": {
+      "chanting": "chanting/Day103Verse88/playlist.m3u8",
+      "meaning": "meaning/Day103Verse88/playlist.m3u8"
+    },
+    "104": {
+      "chanting": "chanting/Day104Verse89/playlist.m3u8",
+      "meaning": "meaning/Day104Verse89/playlist.m3u8"
+    },
+    "105": {
+      "chanting": "chanting/Day105Verse90/playlist.m3u8",
+      "meaning": "meaning/Day105Verse90/playlist.m3u8"
+    },
+    "106": {
+      "chanting": "chanting/Day106Verse91/playlist.m3u8",
+      "meaning": "meaning/Day106Verse91/playlist.m3u8"
+    },
+    "107": {
+      "chanting": "chanting/Day107Verse92/playlist.m3u8",
+      "meaning": "meaning/Day107Verse92/playlist.m3u8"
+    },
+    "108": {
+      "chanting": "chanting/Day109Verse93/playlist.m3u8",
+      "meaning": "meaning/Day109Verse93/playlist.m3u8"
+    },
+    "110": {
+      "chanting": "chanting/Day110Verse94/playlist.m3u8",
+      "meaning": "meaning/Day110Verse94/playlist.m3u8"
+    },
+    "111": {
+      "chanting": "chanting/Day111Verse95/playlist.m3u8",
+      "meaning": "meaning/Day111Verse95/playlist.m3u8"
+    },
+    "112": {
+      "chanting": "chanting/Day112Verse96/playlist.m3u8",
+      "meaning": "meaning/Day112Verse96/playlist.m3u8"
+    },
+    "113": {
+      "chanting": "chanting/Day113Verse97/playlist.m3u8",
+      "meaning": "meaning/Day113Verse97/playlist.m3u8"
+    },
+    "114": {
+      "chanting": "chanting/Day114Verse98/playlist.m3u8",
+      "meaning": "meaning/Day114Verse98/playlist.m3u8"
+    },
+    "115": {
+      "chanting": "chanting/Day116Verse99/playlist.m3u8",
+      "meaning": "meaning/Day116Verse99/playlist.m3u8"
+    },
+    "117": {
+      "chanting": "chanting/Day117Verse100/playlist.m3u8",
+      "meaning": "meaning/Day117Verse100/playlist.m3u8"
+    }
+  }
+}

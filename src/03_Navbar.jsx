@@ -16,7 +16,7 @@ import { useLocation } from "react-router-dom";
 import { C, F, ALL_NAV, FEATURED_EVENT_LABEL } from "./01_theme";
 
 // ── Audio config ───────────────────────────────────────────────────────────
-const AUDIO_SRC    = "/SriRamaJayaRama.mp3";
+const AUDIO_SRC = "/SriRamaJayaRama.mp3";
 const AUDIO_VOLUME = 0.12;   // very mild — 0.0 (silent) to 1.0 (full)
 
 // ── Audio SVG icons ────────────────────────────────────────────────────────
@@ -156,13 +156,15 @@ function MobileDrawer({ open, onClose, activePage, setActivePage, bp, audioPlayi
                 cursor: "pointer", transition: "all 0.2s",
               }}>
               <IconMusic size={11} color={audioPlaying ? C.accent : C.green1} />
-              <span style={{ fontFamily: F.body, fontSize: 10,
-                color: audioPlaying ? C.accent : C.green1, fontWeight: 600 }}>
+              <span style={{
+                fontFamily: F.body, fontSize: 10,
+                color: audioPlaying ? C.accent : C.green1, fontWeight: 600
+              }}>
                 {audioPlaying ? "ON" : "OFF"}
               </span>
               {audioPlaying
                 ? <IconPause size={9} color={C.accent} />
-                : <IconPlay  size={9} color={C.green1} />}
+                : <IconPlay size={9} color={C.green1} />}
             </button>
             <button onClick={onClose} aria-label="Close menu"
               style={{
@@ -178,7 +180,7 @@ function MobileDrawer({ open, onClose, activePage, setActivePage, bp, audioPlayi
         <nav style={{ flex: 1, padding: "12px 0" }}>
           {ALL_NAV.map((item, idx) => {
             const isFeatured = item === FEATURED_EVENT_LABEL;
-            const isActive   = activePage === item;
+            const isActive = activePage === item;
             return (
               <button key={item}
                 onClick={() => { setActivePage(item); onClose(); }}
@@ -216,8 +218,10 @@ function MobileDrawer({ open, onClose, activePage, setActivePage, bp, audioPlayi
 
         {/* Drawer footer */}
         <div style={{ padding: "16px 24px", borderTop: `1px solid ${C.orange4}60`, flexShrink: 0 }}>
-          <p style={{ fontFamily: F.body,
-            color: C.textLight, fontSize: 11, textAlign: "center", lineHeight: 1.6 }}>
+          <p style={{
+            fontFamily: F.body,
+            color: C.textLight, fontSize: 11, textAlign: "center", lineHeight: 1.6
+          }}>
             Sanatana Dharma Samrakshana Parishad®<br />Vyoma Linguistic Labs
           </p>
         </div>
@@ -244,43 +248,43 @@ function AudioButton({ playing, onToggle, isTV }) {
       <IconMusic size={isTV ? 13 : 11} color={playing ? C.accent : C.green1} />
       {playing
         ? <IconPause size={isTV ? 10 : 9} color={C.accent} />
-        : <IconPlay  size={isTV ? 10 : 9} color={C.green1} />}
+        : <IconPlay size={isTV ? 10 : 9} color={C.green1} />}
     </button>
   );
 }
 
 // ── Main Navbar ────────────────────────────────────────────────────────────
 export function Navbar({ activePage, setActivePage }) {
-  const [scrolled,      setScrolled]      = useState(false);
-  const [menuOpen,      setMenuOpen]      = useState(false);
-  const [audioPlaying,  setAudioPlaying]  = useState(false);
-  const audioRef                          = useRef(null);
-  const bp                                = useBreakpoint();
-  const isMobileOrTablet                  = bp === "mobile" || bp === "tablet";
-  const isTV                              = bp === "tv";
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [audioPlaying, setAudioPlaying] = useState(false);
+  const audioRef = useRef(null);
+  const bp = useBreakpoint();
+  const isMobileOrTablet = bp === "mobile" || bp === "tablet";
+  const isTV = bp === "tv";
 
   // ── URL-based active page detection ──────────────────────────────────────
   // Maps current URL path back to nav label so the correct tab is highlighted
   // when user navigates directly to a URL (e.g. ramayana.vyoma.org/events)
   const location = useLocation();
   const ROUTE_MAP = {
-    "/home":         "Home",
-    "/events":       "Events",
-    "/offerings":    "Learn",
-    "/quiz":         "Get Certified",
-    "/resources":    "Resources",
+    "/": "Home",
+    "/home": "Know Rāmāyaṇa",
+    "/events": "Events",
+    "/offerings": "Learn Rāmāyaṇa",
+    "/resources": "Resources",
     "/get-involved": "Get Involved",
-    "/gallery":      "View",
+    "/dailysatsanga": "Daily Satsaṅga",
   };
   const activeFromURL = ROUTE_MAP[location.pathname] ?? activePage;
 
   // ── Audio setup ──────────────────────────────────────────────────────────
   useEffect(() => {
     // Create audio element — preload so it's ready when user clicks play
-    const audio      = new Audio(AUDIO_SRC);
-    audio.loop       = true;
-    audio.volume     = AUDIO_VOLUME;
-    audio.preload    = "auto";
+    const audio = new Audio(AUDIO_SRC);
+    audio.loop = true;
+    audio.volume = AUDIO_VOLUME;
+    audio.preload = "auto";
     audioRef.current = audio;
 
     // Audio is paused by default — user must click the play button to start
@@ -323,10 +327,10 @@ export function Navbar({ activePage, setActivePage }) {
   }, [isMobileOrTablet, menuOpen]);
 
   // ── Responsive sizes ─────────────────────────────────────────────────────
-  const navHeight    = bp === "mobile" ? 64 : bp === "tablet" ? 72 : bp === "tv" ? 100 : 90;
+  const navHeight = bp === "mobile" ? 64 : bp === "tablet" ? 72 : bp === "tv" ? 100 : 90;
   const logoFontMain = bp === "mobile" ? 18 : bp === "tablet" ? 20 : bp === "tv" ? 32 : 24;
-  const logoFontSub  = bp === "mobile" ? 12 : bp === "tablet" ? 13 : bp === "tv" ? 22 : 18;
-  const navFontSize  = isTV ? 16 : 14;
+  const logoFontSub = bp === "mobile" ? 12 : bp === "tablet" ? 13 : bp === "tv" ? 22 : 18;
+  const navFontSize = isTV ? 16 : 14;
   const featFontSize = isTV ? 14 : 12;
 
   return (
@@ -349,25 +353,25 @@ export function Navbar({ activePage, setActivePage }) {
           display: "flex", alignItems: "center", height: navHeight,
         }}>
 
-                  {/* ── LOGO with Radiant Gradient Background (Orange, Green, Brown) ── */}
+          {/* ── LOGO with Translucent Orange Background ── */}
           <div style={{
-            display:"flex", alignItems:"center",
-            cursor:"pointer", flexShrink:0,
-            background: `linear-gradient(135deg, ${C.orange1}, ${C.green1}, ${C.brown1})`,
+            display: "flex", alignItems: "center",
+            cursor: "pointer", flexShrink: 0,
+            background: "rgba(224, 102, 25, 0.85)", // Light transparent orange
             borderRadius: 10,
             padding: "4px 10px",
             marginRight: 4,
-            boxShadow: `0 4px 12px ${C.orange1}60`,
+            boxShadow: `0 4px 12px ${C.orange1}40`,
             transition: "all 0.3s ease",
           }}
             onClick={() => { setActivePage("Home"); setMenuOpen(false); }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "scale(1.02)";
-              e.currentTarget.style.boxShadow = `0 6px 16px ${C.orange1}80`;
+              e.currentTarget.style.boxShadow = `0 6px 16px ${C.orange1}60`;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "scale(1)";
-              e.currentTarget.style.boxShadow = `0 4px 12px ${C.orange1}60`;
+              e.currentTarget.style.boxShadow = `0 4px 12px ${C.orange1}40`;
             }}
             role="link" aria-label="Go to home">
             <img
@@ -384,11 +388,13 @@ export function Navbar({ activePage, setActivePage }) {
 
           {/* ── DESKTOP / TV NAV LINKS + AUDIO BUTTON ── */}
           {!isMobileOrTablet && (
-            <div style={{ display:"flex", gap: isTV ? 1 : 1, marginLeft:"auto",
-              flexWrap:"nowrap", alignItems:"center" }}>
+            <div style={{
+              display: "flex", gap: isTV ? 1 : 1, marginLeft: "auto",
+              flexWrap: "nowrap", alignItems: "center"
+            }}>
               {ALL_NAV.map(item => {
                 const isFeatured = item === FEATURED_EVENT_LABEL;
-                const isActive   = activeFromURL === item;
+                const isActive = activeFromURL === item;
                 return (
                   <button key={item}
                     className={`bt${isFeatured ? " featured-nav" : ""}`}
@@ -424,7 +430,7 @@ export function Navbar({ activePage, setActivePage }) {
 
           {/* ── MOBILE / TABLET: featured pill + audio icon + hamburger ── */}
           {isMobileOrTablet && (
-            <div style={{ marginLeft:"auto", display:"flex", alignItems:"center", gap:8 }}>
+            <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 8 }}>
 
               {/* Featured event mini-pill on tablet */}
               {bp === "tablet" && (() => {
@@ -447,16 +453,16 @@ export function Navbar({ activePage, setActivePage }) {
               <button onClick={toggleAudio}
                 title={audioPlaying ? "Pause chanting" : "Play chanting"}
                 style={{
-                  display:"flex", alignItems:"center", justifyContent:"center", gap:4,
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 4,
                   background: audioPlaying ? `${C.accent}15` : `${C.green1}10`,
                   border: `1.5px solid ${audioPlaying ? C.accent : C.green1}50`,
                   borderRadius: 20, padding: "7px 10px",
-                  cursor:"pointer", transition:"all 0.2s", minHeight:40,
+                  cursor: "pointer", transition: "all 0.2s", minHeight: 40,
                 }}>
                 <IconMusic size={12} color={audioPlaying ? C.accent : C.green1} />
                 {audioPlaying
                   ? <IconPause size={9} color={C.accent} />
-                  : <IconPlay  size={9} color={C.green1} />}
+                  : <IconPlay size={9} color={C.green1} />}
               </button>
 
               {/* Hamburger */}
@@ -469,8 +475,8 @@ export function Navbar({ activePage, setActivePage }) {
                   borderRadius: 8,
                   width: bp === "mobile" ? 40 : 44,
                   height: bp === "mobile" ? 40 : 44,
-                  cursor:"pointer", display:"flex", alignItems:"center",
-                  justifyContent:"center", transition:"all 0.2s", flexShrink:0,
+                  cursor: "pointer", display: "flex", alignItems: "center",
+                  justifyContent: "center", transition: "all 0.2s", flexShrink: 0,
                 }}>
                 <HamburgerIcon open={menuOpen} color={C.accent} />
               </button>

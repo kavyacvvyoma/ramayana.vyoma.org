@@ -1,343 +1,513 @@
 // ════════════════════════════════════════════════════════════════════════════
-//  06_HomePage.jsx  —  Poppins body · Yatra One hero · Cinzel sections
+//  LandingPage.jsx  —  PORTAL PAGE
+//  10 hex tiles: 5 top + 5 bottom
 // ════════════════════════════════════════════════════════════════════════════
-import { C, F, FEATURED_EVENT_LABEL } from "./01_theme";
-import { SpiritualHero, Divider, Btn } from "./02_SharedComponents";
+import { useState, useEffect } from "react";
 
-// ── Quiz Banner Popup ─────────────────────────────────────────────────────────
-// Shown once per browser session (sessionStorage key: "quizPopupSeen").
-// Dismiss via ✕, backdrop click, or either CTA link.
+// ── Tile definitions — ordered as requested ───────────────────────────────
+// type: "page"  → calls setActivePage(key)
+// type: "modal" → opens the WhatsApp modal
+const TILES = [
+  { key: "About Ramayana", label: "Know Rāmāyaṇa", sub: "About Rāmāyaṇa", type: "page", icon: "ti-info-circle", border: "#C8551A", fill: "#FBE8DA", labelColor: "#8B3510" },
+  // { key: "__whatsapp__", label: "Join Nithya Parayana", sub: "WhatsApp groups", type: "modal", icon: "ti-brand-whatsapp", border: "#2D7A4A", fill: "#D9F2E3", labelColor: "#1A4D2E" },
+  { key: "YT Shlokas", label: "Daily Satsaṅga", sub: "Video chanting", type: "page", icon: "ti-brand-youtube", border: "#D32F2F", fill: "#FFEBEE", labelColor: "#B71C1C", highlight: true },
+  // { key: "Shlokas", label: "Audio Shlokas", sub: "Listen to audio", type: "page", icon: "ti-music", border: "#C9900C", fill: "#FDF3D4", labelColor: "#6B4C06" },
+  {
+    key: "Learn", label: "Learn Rāmāyaṇa", sub: "Courses & offerings", type: "page", icon: "ti-book-2", border: "#B8841A", fill: "#FBEFD8", labelColor: "#6B4A0A"
+  },
+  { key: "Resources", label: "Resources", sub: "Shlokas & audio", type: "page", icon: "ti-books", border: "#B84A18", fill: "#FAE4DA", labelColor: "#7A2E0E" },
+  // { key: "Get Certified", label: "Get Certified", sub: "Quiz & rewards", type: "page", icon: "ti-trophy", border: "#C07A12", fill: "#FDECD4", labelColor: "#6B430A" },
+  { key: "Events", label: "Events", sub: "Pārāyaṇa & programs", type: "page", icon: "ti-calendar-event", border: "#A86820", fill: "#FAEAD8", labelColor: "#5E3A10" },
+  // { key: "Get Involved", label: "Get Involved", sub: "Volunteer & sponsor", type: "page", icon: "ti-heart-handshake", border: "#C8551A", fill: "#FBE8DA", labelColor: "#8B3510" },
+  // { key: "Gallery", label: "Gallery", sub: "Photo moments", type: "page", icon: "ti-photo", border: "#D4820A", fill: "#FDEFD4", labelColor: "#7A4A05" },
+];
 
-// ── Hero shimmer keyframe (injected once) ────────────────────────────────────
-const SHIMMER_CSS = `
-@keyframes heroShimmer {
-  0%   { background-position: 200% center; }
-  100% { background-position: -200% center; }
+const WA_LINKS = [
+  { label: "Nithya Parayana Group 1", url: "https://chat.whatsapp.com/LvYDaHEWXzU1ZoShqUC2PH" },
+  { label: "Nithya Parayana Group 2", url: "https://chat.whatsapp.com/LvYDaHEWXzU1ZoShqUC2PH" },
+];
+
+// ── Scoped CSS ────────────────────────────────────────────────────────────
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;600;700&family=Noto+Serif+Devanagari:wght@400;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css');
+
+@keyframes lp-down    { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes lp-up      { from{opacity:0;transform:translateY(18px)}  to{opacity:1;transform:translateY(0)} }
+@keyframes lp-hexIn   { from{opacity:0;transform:scale(0.74) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+@keyframes lp-shim    { 0%{background-position:200% center} 100%{background-position:-200% center} }
+@keyframes lp-drift   { 0%,100%{transform:translate(-50%,-50%) scale(1)} 50%{transform:translate(-50%,-50%) scale(1.03) rotate(3deg)} }
+@keyframes lp-modalIn { from{opacity:0;transform:scale(0.92) translateY(12px)} to{opacity:1;transform:scale(1) translateY(0)} }
+@keyframes lp-glowPulse { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(1.15); opacity: 0; } }
+
+.lp-hdr { animation: lp-down 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+.lp-vol { transition: all 0.2s ease; }
+.lp-vol:hover { filter:brightness(1.05); transform:translateY(-2px) scale(1.02); background: rgba(42,26,10,0.08) !important; }
+
+.lp-hex-border, .lp-hex-fill {
+  position: absolute; inset: 0;
+  clip-path: polygon(48% 2%,52% 2%,98% 26%,98% 74%,52% 98%,48% 98%,2% 74%,2% 26%);
 }
-.hero-shimmer-h1 {
-  background: linear-gradient(
-    90deg,
-    #C8551A 0%,
-    #E07035 18%,
-    #2D6A4F 36%,
-    #C8551A 54%,
-    #E07035 72%,
-    #2D6A4F 90%,
-    #C8551A 100%
-  );
+.lp-hex-fill { inset: 3px; }
+
+.lp-hex-wrap {
+  position: relative;
+  transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1), filter 0.45s ease;
+  will-change: transform;
+}
+.lp-hex-wrap:hover { transform: translateY(-6px) scale(1.04); filter: brightness(1.06); }
+
+.lp-hex-inner {
+  position: absolute; inset: 0;
+  clip-path: polygon(48% 2%,52% 2%,98% 26%,98% 74%,52% 98%,48% 98%,2% 74%,2% 26%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+}
+
+.lp-title {
+  background: linear-gradient(90deg,#C8551A 0%,#E07035 22%,#8B1A1A 44%,#C8551A 66%,#E07035 88%,#8B1A1A 100%);
   background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: heroShimmer 4s linear infinite;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  animation: lp-shim 6s linear infinite;
+}
+
+.lp-mandala {
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: min(100vw, 900px); height: min(100vw, 900px);
+  opacity: 0.025; pointer-events: none;
+  animation: lp-drift 22s ease-in-out infinite;
+}
+
+.lp-modal-card { animation: lp-modalIn 0.28s cubic-bezier(0.22,1,0.36,1) both; }
+
+.lp-wa-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 13px 0; border-bottom: 1px solid rgba(0,0,0,0.07);
+}
+.lp-wa-row:last-child { border-bottom: none; }
+
+.lp-copy-btn {
+  background: none; border: 1px solid rgba(0,0,0,0.15); border-radius: 6px;
+  padding: 4px 10px; cursor: pointer; font-size: 11px; color: #666;
+  transition: all 0.18s ease; white-space: nowrap; flex-shrink: 0;
+  font-family: -apple-system, 'Segoe UI', sans-serif;
+}
+.lp-copy-btn:hover { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.25); }
+.lp-copy-btn.lp-copied { border-color: #2D7A4A; color: #2D7A4A; background: rgba(45,122,74,0.06); }
+
+@media (max-width: 850px) {
+  .lp-hdr {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 12px 20px !important;
+    padding: 14px 20px !important;
+  }
+  .lp-logo-col {
+    flex: 0 0 auto !important;
+    justify-content: center !important;
+  }
+  .lp-title-col {
+    flex: 0 0 auto !important;
+    text-align: center !important;
+  }
+  .lp-vol-col {
+    flex: 1 0 100% !important;
+    justify-content: center !important;
+    margin-top: 4px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .lp-hdr {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+  }
+  .lp-logo-col {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+  .lp-title-col {
+    width: 100% !important;
+    text-align: center !important;
+  }
+  .lp-vol-col {
+    width: 100% !important;
+    justify-content: center !important;
+  }
 }
 `;
 
-// ── Retained URLs ────────────────────────────────────────────────────────────
-const YOUTUBE_URL = "https://www.youtube.com/playlist?list=PLmozlYyYE-EQtZaTjtmmL8l238faWFrRU";
-const SLIDES_URL  = "https://digitalsanskrit.com";
-
-const HERO_SHLOKA_SANS = "वेदवेद्ये परे पुंसि जाते दशरथात्मजे । वेदः प्राचेतसादासीत् साक्षाद्रामायणात्मना ॥";
-const HERO_SHLOKA_IAST = "vedavedye pare puṃsi jāte daśarathātmaje | vedaḥ prācetasādāsīt sākṣāt rāmāyaṇātmanā ||";
-const HERO_MEANING     = "When the Supreme Being (Rāma) — who is known through the Veda-s — was born as the son of Daśaratha, the Veda itself manifested in the form of the Rāmāyaṇa through the sage Vālmīki.";
-
-const ABOUT_PARAS = [
-  "The Rāmāyaṇa is one of the two great Itihāsa-s, the other being the Mahābhārata. The word Itihāsa (इतिहासः = इति ह आस) literally means \"thus indeed it happened,\" indicating a traditional narrative that preserves the true happenings while conveying profound dhārmika, moral, and spiritual teachings. The Rāmāyaṇa narrates the life and journey of Rāma (रामस्य अयनम् = रामायणम्), whose life exemplifies the highest ideals of dharma.",
-  "The most ancient and foundational text is the Vālmīki Rāmāyaṇa, composed by the sage Vālmīki in Sanskrit in 24,000 verses — the Ādi-kāvya, the very first kāvya. Based on how each ṛṣi and poet experienced the bliss of Rāma, celebrated works arose: the Rāmacaritamānasa by Tulasīdāsa in Awadhi, the Kamba Rāmāyaṇam by Kamban in Tamil, the Adhyātma Rāmāyaṇa in the Brahmāṇḍa Purāṇa, and countless regional retellings across cultures and generations.",
-];
-
-const GUIDE_ITEMS = [
-  { label: "Vedatulya",                     desc: "Revered with sanctity comparable to the Veda-s." },
-  { label: "Veda-upabṛṃhaṇa",              desc: "Elaborates and illustrates the teachings of the Veda-s through narrative and examples." },
-  { label: "Itihāsa",                       desc: "Preserving elements of history, geography, and cultural memory." },
-  { label: "Dharma-śāstra",                desc: "Guiding individuals on righteous conduct and ethical living." },
-  { label: "Kāvya (Ādi-kāvya)",            desc: "One of the greatest works of poetry — celebrated for its literary beauty and aesthetic excellence." },
-  { label: "Artha-śāstra",                 desc: "Offering insights into governance, leadership, and statecraft." },
-  { label: "Self-management Manual",        desc: "Teaching discipline, resilience, and emotional balance." },
-  { label: "Relationship Manual",           desc: "Presenting ideal models between parents and children, brothers, spouses, friends, and rulers and citizens." },
-  { label: "Leadership & Management Guide", desc: "Offering lessons on responsibility, teamwork, and ethical decision-making relevant in modern organisational contexts." },
-  { label: "Bhakti-śāstra",                desc: "Illustrating the highest forms of devotion through characters such as Hanumān." },
-  { label: "Mokṣa-śāstra",                desc: "Guiding seekers toward spiritual liberation through the teachings of dharma, devotion, and detachment." },
-];
-
-const BENEFITS = [
-  { title: "Spiritual Upliftment & Liberation", icon: "ॐ",
-    points: ["Removal of all types of sins.", "Listening to the Rāmāyaṇa helps one cross the ocean of saṁsāra and move toward liberation.", "Devoted listening leads to eternal bliss (paramānanda) and freedom from sorrow."] },
-  { title: "Personality Growth & Character Development", icon: "✦",
-    points: ["Nurtures noble qualities — truthfulness, compassion, gratitude, and self-control as exemplified by Śrī Rāma.", "Reflecting on the characters inspires individuals to cultivate virtues and strengthen moral character.", "Encourages self-discipline, devotion, and righteous conduct in everyday life."] },
-  { title: "Mental Peace & Emotional Strength", icon: "◎",
-    points: ["Listening to Rāmakathā brings peace of mind and emotional balance.", "Removes fear, distress, and negative mental disturbances such as bad dreams.", "Helps one face life's challenges with courage and clarity."] },
-  { title: "Family Harmony & Social Well-being", icon: "⌂",
-    points: ["Promotes harmony within the family, reducing conflicts between spouses and family members.", "Strengthens devotion, gratitude, and noble conduct among family members.", "Transforms a home into a sacred and uplifting environment like a tīrtha-kṣetra."] },
-  { title: "Protection & Removal of Negative Influences", icon: "⚔",
-    points: ["Where the sacred text is present, negative and harmful forces are said to flee.", "Devotion to Rāma grants protection from dangers and difficulties."] },
-  { title: "Prosperity & Fulfilment of Righteous Desires", icon: "☸",
-    points: ["The Rāmāyaṇa is compared to Kāmadhenu, capable of fulfilling noble aspirations.", "Listening and recitation bring prosperity, happiness, and success in life.", "Certain sections are traditionally recited for specific blessings — progeny, marriage, wealth, and well-being."] },
-];
-
-const KANDAS = [
-  { n: "✦",   name: "Rāmāyaṇa Māhātmya", desc: "Glory & sanctity of the Rāmāyaṇa",         url: "https://digitalsanskrit.com/E-books/mahatmyam/" },
-  { n: "I",   name: "Bāla Kāṇḍa",        desc: "Birth & divine childhood of Rāma",           url: "https://digitalsanskrit.com/E-books/balakanda/" },
-  { n: "II",  name: "Ayodhyā Kāṇḍa",     desc: "The exile of Rāma",                          url: "https://digitalsanskrit.com/E-books/ayodhyakanda/" },
-  { n: "III", name: "Araṇya Kāṇḍa",      desc: "Forest life & abduction of Sītā",            url: "https://digitalsanskrit.com/E-books/aranyakanda/" },
-  { n: "IV",  name: "Kiṣkindhā Kāṇḍa",   desc: "Alliance with the Vānaras",                  url: "https://digitalsanskrit.com/E-books/kishkindhakanda/" },
-  { n: "V",   name: "Sundara Kāṇḍa",     desc: "Hanumān's great journey to Laṅkā",           url: "https://digitalsanskrit.com/E-books/sundarakanda/" },
-  { n: "VI",  name: "Yuddha Kāṇḍa",      desc: "The battle & victory of dharma",             url: "https://digitalsanskrit.com/E-books/yudhakanda/" },
-  { n: "VII", name: "Uttara Kāṇḍa",      desc: "Rāma's return, reign & legacy",              url: null, tooltip: "The E-book is in progress" },
-];
-
-function SH({ children, center = false, sub }) {
+// ── Mandala decorative bg ─────────────────────────────────────────────────
+function Mandala() {
   return (
-    <div style={{ marginBottom: 32, textAlign: center ? "center" : "left" }}>
-      <h2 style={{ fontFamily: F.heading, color: C.ink, fontSize: "clamp(17px,3vw,24px)", fontWeight: 600, letterSpacing: 1, lineHeight: 1.3 }}>{children}</h2>
-      {sub && <p style={{ fontFamily: F.body, color: C.inkLight, fontSize: "clamp(13px,2vw,14px)", fontStyle: "italic", marginTop: 6, lineHeight: 1.6 }}>{sub}</p>}
-      <div style={{ width: 36, height: 2, background: C.accent, borderRadius: 2, marginTop: 10, ...(center ? { margin: "10px auto 0" } : {}) }} />
+    <svg className="lp-mandala" viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+      {[50, 100, 150, 200, 260, 330, 400].map((r, i) => (
+        <circle key={i} cx={400} cy={400} r={r} fill="none"
+          stroke="#C8551A" strokeWidth={i % 2 === 0 ? 1.4 : 0.6} />
+      ))}
+      {Array.from({ length: 16 }, (_, i) => {
+        const a = (i * 22.5) * Math.PI / 180;
+        return <line key={i} x1={400} y1={400}
+          x2={400 + 400 * Math.cos(a)} y2={400 + 400 * Math.sin(a)}
+          stroke="#C8551A" strokeWidth={0.5} />;
+      })}
+      {[80, 160, 240].map((r, ri) =>
+        Array.from({ length: 8 }, (_, i) => {
+          const a = (i * 45) * Math.PI / 180;
+          return <circle key={`${ri}-${i}`}
+            cx={400 + r * Math.cos(a)} cy={400 + r * Math.sin(a)}
+            r={5 + ri * 2} fill="none" stroke="#C8551A" strokeWidth={0.7} />;
+        })
+      )}
+      {Array.from({ length: 8 }, (_, i) => {
+        const a = (i * 45) * Math.PI / 180;
+        const cx = 400 + 30 * Math.cos(a), cy = 400 + 30 * Math.sin(a);
+        return <ellipse key={`p${i}`} cx={cx} cy={cy} rx={14} ry={7}
+          transform={`rotate(${i * 45 + 90},${cx},${cy})`}
+          fill="none" stroke="#C8551A" strokeWidth={0.8} />;
+      })}
+    </svg>
+  );
+}
+
+// ── WhatsApp Modal ────────────────────────────────────────────────────────
+function WhatsAppModal({ onClose }) {
+  const [copied, setCopied] = useState(null);
+
+  const handleCopy = (url, idx) => {
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(idx);
+      setTimeout(() => setCopied(null), 2200);
+    });
+  };
+
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed", inset: 0, zIndex: 2000,
+        background: "rgba(20,10,5,0.52)",
+        backdropFilter: "blur(5px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: 20,
+      }}
+    >
+      <div
+        className="lp-modal-card"
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: "#FFFBF6",
+          borderRadius: 18,
+          padding: "28px 28px 20px",
+          maxWidth: 430, width: "100%",
+          boxShadow: "0 28px 64px rgba(0,0,0,0.18)",
+          border: "1px solid rgba(200,85,26,0.14)",
+          position: "relative",
+        }}
+      >
+        {/* Close button */}
+        <button onClick={onClose} style={{
+          position: "absolute", top: 14, right: 14,
+          background: "rgba(0,0,0,0.06)", border: "none", borderRadius: 8,
+          width: 30, height: 30, cursor: "pointer", fontSize: 18,
+          color: "#666", display: "flex", alignItems: "center", justifyContent: "center",
+          lineHeight: 1,
+        }}>×</button>
+
+        {/* Modal header */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 4 }}>
+          <div style={{
+            width: 44, height: 44, borderRadius: "50%",
+            background: "#25D36618",
+            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+          }}>
+            <i className="ti ti-brand-whatsapp" style={{ fontSize: 24, color: "#25D366" }} />
+          </div>
+          <div>
+            <div style={{
+              fontFamily: "-apple-system, 'Segoe UI', sans-serif",
+              fontWeight: 700, fontSize: 17, color: "#1A1A1A", lineHeight: 1.2,
+            }}>
+              Join Nithya Parayana
+            </div>
+            <div style={{
+              fontFamily: "-apple-system, 'Segoe UI', sans-serif",
+              fontSize: 12, color: "#999", marginTop: 3,
+            }}>
+              Tap a group link to join on WhatsApp
+            </div>
+          </div>
+        </div>
+
+        <div style={{ height: 1, background: "rgba(0,0,0,0.08)", margin: "16px 0 4px" }} />
+
+        {/* Group links */}
+        {WA_LINKS.map((link, idx) => (
+          <div key={idx} className="lp-wa-row">
+            <div style={{
+              width: 34, height: 34, borderRadius: "50%",
+              background: "rgba(45,122,74,0.1)",
+              display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+            }}>
+              <i className="ti ti-users" style={{ fontSize: 16, color: "#2D7A4A" }} />
+            </div>
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                flex: 1,
+                fontFamily: "-apple-system, 'Segoe UI', sans-serif",
+                fontSize: 14, fontWeight: 600,
+                color: "#2D7A4A", textDecoration: "none",
+              }}
+            >
+              {link.label}
+            </a>
+            <button
+              className={`lp-copy-btn${copied === idx ? " lp-copied" : ""}`}
+              onClick={() => handleCopy(link.url, idx)}
+            >
+              {copied === idx ? "✓ Copied!" : "Copy link"}
+            </button>
+          </div>
+        ))}
+
+        <div style={{
+          marginTop: 14, textAlign: "center",
+          fontFamily: "-apple-system, 'Segoe UI', sans-serif",
+          fontSize: 11, color: "#C0C0C0",
+        }}>
+          Press Esc or click outside to close
+        </div>
+      </div>
     </div>
   );
 }
 
-export function HomePage({ setActivePage }) {
+// ── Single hex tile ───────────────────────────────────────────────────────
+function HexTile({ tile, onPageClick, onModalClick, delay }) {
+  const w = "clamp(130px, 14.5vw, 175px)";
+  const h = "clamp(148px, 16.5vw, 200px)";
+
+  const handleClick = () => {
+    if (tile.type === "modal") onModalClick();
+    else onPageClick(tile.key);
+  };
+
   return (
-    <div className="pi">
-      {/* <QuizBannerPopup /> */}
-      <style>{SHIMMER_CSS}</style>
-
-      {/* ══ HERO ══════════════════════════════════════════════════════════════ */}
-      <SpiritualHero style={{
-        background: C.surface,
-        position: "relative", overflow: "hidden",
-        borderBottom: `1px solid ${C.inkGhost}`,
-      }}>
-        {/* Saffron top bar */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: C.accent, zIndex: 2 }} />
-
-        {/* Responsive 50/50 grid — stacks on mobile */}
+    <div
+      onClick={handleClick}
+      style={{
+        display: "flex", flexDirection: "column", alignItems: "center",
+        cursor: "pointer", gap: 10, userSelect: "none",
+        position: "relative",
+        animation: `lp-hexIn 0.52s cubic-bezier(0.22,1,0.36,1) ${delay}s both`,
+      }}
+    >
+      {tile.highlight && (
         <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 420px), 1fr))",
-          minHeight: "clamp(420px, 70vh, 680px)",
+          position: "absolute", top: -8, left: "50%", transform: "translateX(-50%)",
+          background: tile.border, color: "#FFF", fontSize: "clamp(8px, 0.8vw, 10px)", fontWeight: 700,
+          padding: "3px 10px", borderRadius: 12, zIndex: 10, letterSpacing: 1,
+          boxShadow: `0 3px 8px ${tile.border}60`, whiteSpace: "nowrap"
         }}>
-
-          {/* ── LEFT: rama.png image ── */}
-          <div style={{
-            position: "relative",
-            minHeight: "clamp(260px, 45vw, 680px)",
-            overflow: "hidden",
+          ONGOING
+        </div>
+      )}
+      <div className="lp-hex-wrap" style={{ width: w, height: h, filter: tile.highlight ? `drop-shadow(0 4px 12px ${tile.border}50)` : "none" }}>
+        <div className="lp-hex-border" style={{ background: tile.border }} />
+        <div className="lp-hex-fill" style={{ background: tile.fill }} />
+        <div className="lp-hex-inner">
+          <i
+            className={`ti ${tile.icon}`}
+            style={{ fontSize: "clamp(22px,2.6vw,32px)", color: tile.border, lineHeight: 1 }}
+          />
+          <span style={{
+            fontFamily: "-apple-system, 'Segoe UI', sans-serif",
+            fontWeight: 700,
+            color: tile.labelColor,
+            fontSize: "clamp(11.5px, 1.1vw, 14.5px)",
+            letterSpacing: 0.6,
+            textAlign: "center",
+            padding: "0 8px",
+            lineHeight: 1.3,
+            textTransform: "uppercase",
           }}>
+            {tile.label}
+          </span>
+        </div>
+      </div>
+
+      {/* 
+      <span style={{
+        fontFamily: "-apple-system, 'Segoe UI', sans-serif",
+        fontSize: "clamp(13px, 1.2vw, 15px)",
+        color: "#7A5030", fontWeight: 400,
+        textAlign: "center",
+        maxWidth: "clamp(100px, 12vw, 140px)",
+        lineHeight: 1.5,
+      }}>
+        {tile.sub}
+      </span>
+      */}
+    </div>
+  );
+}
+
+// ── Landing page root ─────────────────────────────────────────────────────
+export function LandingPage({ setActivePage }) {
+  const [rdy, setRdy] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setRdy(true), 40);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    const fn = (e) => { if (e.key === "Escape") setShowModal(false); };
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, []);
+
+  const row1 = TILES.slice(0, 5);
+  const row2 = TILES.slice(5);
+
+  return (
+    <div style={{
+      minHeight: "100svh", background: "#FDFAF4",
+      display: "flex", flexDirection: "column",
+      overflowX: "hidden", position: "relative",
+    }}>
+      <style>{CSS}</style>
+      <Mandala />
+
+      {/* ══ HEADER BAR ══════════════════════════════════════════════════ */}
+      <header className="lp-hdr" style={{
+        position: "relative", zIndex: 10,
+        background: "rgba(253,250,244,0.97)",
+        backdropFilter: "blur(8px)",
+        borderBottom: "1px solid rgba(200,85,26,0.16)",
+        boxShadow: "0 2px 18px rgba(200,85,26,0.07)",
+        padding: "clamp(12px,1.3vw,14px) clamp(14px,4vw,40px)",
+        minHeight: "clamp(58px,8vh,66px)",
+        display: "flex", alignItems: "center", justifyContent: "space-between", gap: 14,
+      }}>
+        {/* Left Side: Logo */}
+        <div className="lp-logo-col" style={{ flex: 1, display: "flex", justifyContent: "flex-start", minWidth: 0 }}>
+          <div
+            style={{
+              display: "flex", alignItems: "center",
+              flexShrink: 0,
+              background: "rgba(224,102,25,0.85)",
+              borderRadius: 10,
+              padding: "6px 10px",
+              boxShadow: "0 4px 12px rgba(200,85,26,0.25)",
+              transition: "all 0.3s ease",
+              cursor: "pointer",
+              overflow: "visible",
+            }}
+            onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.02)"; e.currentTarget.style.boxShadow = "0 6px 16px rgba(200,85,26,0.38)"; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = "scale(1)"; e.currentTarget.style.boxShadow = "0 4px 12px rgba(200,85,26,0.25)"; }}
+          >
             <img
-              src="/rama.png"
-              alt="Śrī Rāma Darbar"
-              style={{
-                position: "absolute", inset: 0,
-                width: "100%", height: "100%",
-                objectFit: "cover",
-                objectPosition: "center top",
-                display: "block",
-              }}
+              src="/logo_white.png"
+              alt="Vyoma Rāmāyaṇa"
+              style={{ maxHeight: 44, width: "auto", display: "block", filter: "brightness(1.1)", objectFit: "contain" }}
             />
           </div>
-
-          {/* ── RIGHT: hero content ── */}
-          <div style={{
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center",
-            textAlign: "center",
-            padding: "clamp(48px,6vw,80px) clamp(24px,4vw,52px)",
-            position: "relative", zIndex: 1,
-          }}>
-            {/* Watermark */}
-            <div style={{
-              position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
-              fontFamily: F.devan, fontSize: "clamp(80px,15vw,200px)", fontWeight: 700,
-              color: C.accent, opacity: 0.03, pointerEvents: "none", userSelect: "none", letterSpacing: 4,
-            }}>राम</div>
-
-            {/* Scrolling side columns */}
-            {[
-              { side: "left",  texts: ["श्री","राम","जय","राम","ॐ","श्री"], dir: "up" },
-              { side: "right", texts: ["जय","श्री","राम","ॐ","जय","राम"],   dir: "down" },
-            ].map((col, ci) => (
-              <div key={ci} style={{ position: "absolute", [col.side]: 4, top: 0, bottom: 0, width: 20, overflow: "hidden", pointerEvents: "none", opacity: 0.12 }}>
-                <div style={{ animation: `${col.dir === "up" ? "scrollUp" : "scrollDown"} 18s linear infinite`, display: "flex", flexDirection: "column", gap: 16 }}>
-                  {[...col.texts, ...col.texts].map((t, i) => (
-                    <span key={i} style={{ fontFamily: F.devan, fontSize: 10, fontWeight: 700, color: C.accent, writingMode: "vertical-rl", letterSpacing: 4 }}>{t}</span>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <div style={{ position: "relative", zIndex: 1, maxWidth: 520, width: "100%" }}>
-              <p style={{ fontFamily: F.devan, color: C.inkLight, fontSize: "clamp(11px,1.8vw,14px)", lineHeight: 1.7, marginBottom: 12, fontWeight: 600 }}>{HERO_SHLOKA_SANS}</p>
-              <p style={{ fontFamily: F.serif, color: C.inkFaint, fontSize: "clamp(10px,1.3vw,11px)", fontStyle: "italic", letterSpacing: 0.5, marginBottom: 20 }}>{HERO_SHLOKA_IAST}</p>
-
-              <h1
-                className="hero-shimmer-h1"
-                style={{
-                  fontFamily: F.hero,
-                  fontWeight: 400,
-                  fontSize: "clamp(32px,5vw,68px)",
-                  lineHeight: 1.05,
-                  letterSpacing: 4,
-                  marginBottom: 10,
-                }}
-              >Ramayana</h1>
-
-              <p style={{ fontFamily: F.body, color: C.accent, fontSize: "clamp(10px,1.3vw,11px)", letterSpacing: 3, textTransform: "uppercase", marginBottom: 20, fontWeight: 500 }}>The Eternal Epic of Dharma</p>
-
-              <p style={{ fontFamily: F.serif, color: C.inkMid, fontSize: "clamp(12px,1.6vw,14px)", lineHeight: 1.8, margin: "0 auto 20px", fontStyle: "italic" }}>{HERO_MEANING}</p>
-
-              <div style={{ display: "flex", gap: 8, justifyContent: "center", flexWrap: "wrap" }}>
-                <button className="bt" onClick={() => window.open(SLIDES_URL, "_blank")} style={{ background: `${C.accent}18`, border: `1.5px solid ${C.accent}55`, color: C.accent, borderRadius: 6, padding: "9px 18px", fontFamily: "'Poppins', sans-serif", fontSize: "clamp(10px,1.5vw,12px)", fontWeight: 700, letterSpacing: 0.3, cursor: "pointer", minHeight: 40 }}>Access Ramayana Companion</button>
-                <button className="bt" onClick={() => window.open(YOUTUBE_URL, "_blank")} style={{ background: `${C.green}18`, border: `1.5px solid ${C.green}55`, color: C.green, borderRadius: 6, padding: "9px 18px", fontFamily: "'Poppins', sans-serif", fontSize: "clamp(10px,1.5vw,12px)", fontWeight: 700, letterSpacing: 0.3, cursor: "pointer", minHeight: 40 }}>▶ Watch Recordings</button>
-              </div>
-
-            </div>
-          </div>
-
         </div>
-      </SpiritualHero>
 
-      <div style={{ maxWidth: 1060, margin: "0 auto", padding: "clamp(48px,7vw,80px) clamp(20px,4vw,32px)" }}>
-
-        {/* ── ABOUT ── */}
-        <section style={{ marginBottom: "clamp(56px,8vw,88px)" }}>
-          <SH>What is the Rāmāyaṇa?</SH>
-          {ABOUT_PARAS.map((p, i) => (
-            <p key={i} style={{ fontFamily: F.body, color: C.inkMid, fontSize: "clamp(14px,2vw,16px)", lineHeight: 1.9, marginBottom: 20, maxWidth: 760, fontWeight: 300 }}>{p}</p>
-          ))}
-          <p style={{ fontFamily: F.serif, color: C.inkLight, fontSize: "clamp(14px,2vw,17px)", lineHeight: 1.9, fontStyle: "italic", borderLeft: `3px solid ${C.accent}`, paddingLeft: 20, marginTop: 8, maxWidth: 680 }}>
-            Thus, the Rāmāyaṇa stands as a timeless guide illuminating every dimension of life — personal, social, ethical, and spiritual — through the inspiring journey of Rāma and the ideals embodied in the epic.
-          </p>
-        </section>
-
-         {/* ── SEVEN KĀṆḌAS — timeline ── */}
-        <section style={{ marginBottom: "clamp(32px,4vw,48px)" }}>
-          <SH center sub="The complete Vālmīki Rāmāyaṇa — from Māhātmya to Yuddha Kāṇḍa">The Seven Sacred Kāṇḍas</SH>
-          <div style={{ position: "relative", display: "flex", gap: 0, overflowX: "auto", WebkitOverflowScrolling: "touch", paddingBottom: 8, marginTop: 8 }}>
-            <div style={{ position: "absolute", top: 28, left: 0, right: 0, height: 1, background: `linear-gradient(to right, transparent, ${C.accentSoft}, ${C.accentSoft}, transparent)`, zIndex: 0 }} />
-            {KANDAS.map((k, i) => (
-              <div
-                key={i}
-                className="hl"
-                onClick={() => k.url && window.open(k.url, "_blank", "noopener,noreferrer")}
-                title={k.tooltip || undefined}
-                style={{
-                  flex: "1 1 120px", minWidth: 110,
-                  display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",
-                  padding: "0 10px 16px", position: "relative", zIndex: 1,
-                  cursor: k.url ? "pointer" : "default",
-                }}
-              >
-                <div style={{
-                  width: 40, height: 40, borderRadius: "50%",
-                  border: `2px solid ${k.url ? C.accent : C.inkGhost}`,
-                  background: k.url ? C.cardBg : C.surface,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  marginBottom: 12, flexShrink: 0,
-                  boxShadow: k.url ? `0 2px 8px ${C.accent}20` : "none",
-                  transition: "all 0.2s ease",
-                }}>
-                  <span style={{ fontFamily: F.heading, fontSize: k.n === "✦" ? 14 : 10, fontWeight: 700, color: k.url ? C.accent : C.inkGhost, letterSpacing: 0.5 }}>{k.n}</span>
-                </div>
-                <div style={{ fontFamily: F.body, color: k.url ? C.ink : C.inkLight, fontSize: "clamp(9px,1.3vw,11px)", fontWeight: 600, marginBottom: 4, letterSpacing: 0.2 }}>{k.name}</div>
-                <div style={{ fontFamily: F.body, color: C.inkLight, fontSize: "clamp(10px,1.4vw,12px)", lineHeight: 1.4, fontWeight: 300 }}>{k.desc}</div>
-                {k.url && (
-                  <span style={{ fontFamily: F.body, color: C.accent, fontSize: 9, marginTop: 5, letterSpacing: 0.5 }}>Read →</span>
-                )}
-                {k.tooltip && (
-                  <span style={{ fontFamily: F.body, color: C.inkGhost, fontSize: 9, marginTop: 5, letterSpacing: 0.3, fontStyle: "italic" }}>Coming soon</span>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── HOW RAMAYANA GUIDES ── */}
-        <section style={{ marginBottom: "clamp(56px,8vw,88px)" }}>
-          <SH sub="Rāmāyaṇa is not merely a narrative of events that happened centuries ago — it remains deeply relevant today.">
-            How does Rāmāyaṇa guide everyday life?
-          </SH>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 420px), 1fr))", gap: "0 clamp(32px,4vw,60px)" }}>
-            {GUIDE_ITEMS.map((item, i) => (
-              <div key={i} style={{ display: "flex", gap: 20, alignItems: "flex-start", padding: "16px 0", borderBottom: `1px solid ${C.inkGhost}` }}>
-                <span style={{ fontFamily: F.heading, fontSize: 11, fontWeight: 700, color: C.accent, flexShrink: 0, letterSpacing: 0.5, minWidth: 22, paddingTop: 3 }}>{String(i + 1).padStart(2, "0")}</span>
-                <div>
-                  <div style={{ fontFamily: F.body, color: C.ink, fontSize: "clamp(12px,1.8vw,13px)", fontWeight: 600, marginBottom: 3 }}>{item.label}</div>
-                  <div style={{ fontFamily: F.body, color: C.inkLight, fontSize: "clamp(12px,1.7vw,14px)", lineHeight: 1.7, fontWeight: 300 }}>{item.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── WHY STUDY ── */}
-        <section style={{ marginBottom: "clamp(56px,8vw,88px)" }}>
-          <SH sub="Traditional śāstra-pramāṇa on the benefits of Rāmāyaṇa recitation & study.">
-            Why should I study Rāmāyaṇa?
-          </SH>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 300px), 1fr))", gap: "clamp(20px,3vw,32px)" }}>
-            {BENEFITS.map((b, i) => (
-              <div key={i} style={{ paddingTop: 4 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12, paddingBottom: 10, borderBottom: `1px solid ${C.accentSoft}` }}>
-                  <span style={{ fontFamily: F.devan, color: C.accent, fontSize: 18, lineHeight: 1, flexShrink: 0 }}>{b.icon}</span>
-                  <h3 style={{ fontFamily: F.heading, color: C.ink, fontSize: "clamp(11px,1.8vw,13px)", fontWeight: 600, letterSpacing: 0.5 }}>{b.title}</h3>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {b.points.map((pt, pi) => (
-                    <p key={pi} style={{ fontFamily: F.body, color: C.inkMid, fontSize: "clamp(12px,1.7vw,14px)", lineHeight: 1.7, paddingLeft: 14, borderLeft: `1px solid ${C.inkGhost}`, fontWeight: 300 }}>{pt}</p>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ── HOW TO INTERNALISE CTA ── */}
-        {/* <section> ... </section> */}
-
-        {/* ══ TESTIMONIAL — last section ══════════════════════════════════════ */}
-        <section style={{ marginTop: "clamp(40px,6vw,64px)" }}>
-          <SH center sub="Voices of those who have walked the path of the Rāmāyaṇa Pārāyaṇa">
-            Divine Reflections by Pārāyaṇa Karthas
-          </SH>
-          <div style={{
-            position: "relative",
-            background: C.cardBg,
-            border: `1px solid ${C.accentSoft}`,
-            borderLeft: `4px solid ${C.accent}`,
-            borderRadius: 10,
-            padding: "clamp(18px,3vw,28px) clamp(20px,4vw,36px) clamp(16px,2.5vw,24px)",
-            boxShadow: `0 2px 16px ${C.accent}0D`,
-            maxWidth: 760,
-            margin: "0 auto",
+        {/* Center: Title */}
+        <div className="lp-title-col" style={{ flex: "none", textAlign: "center" }}>
+          <h1 className="lp-title" style={{
+            fontFamily: "'Noto Serif',serif",
+            fontSize: "clamp(15px,3vw,28px)", lineHeight: 1.4, margin: 0,
+            letterSpacing: "clamp(0.5px,0.3vw,2px)",
+            whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
           }}>
-            <div style={{
-              position: "absolute", top: 10, left: 16,
-              fontFamily: "Georgia, serif", fontSize: 56, lineHeight: 1,
-              color: C.accent, opacity: 0.07, pointerEvents: "none", userSelect: "none",
-            }}>"</div>
-            <div style={{ position: "relative", zIndex: 1 }}>
-              <p style={{ fontFamily: F.serif, color: C.inkMid, fontSize: "clamp(12px,1.5vw,13px)", lineHeight: 1.8, fontStyle: "italic", fontWeight: 400, marginBottom: 10 }}>
-                The discourse beautifully illuminated the timeless relevance of the Vālmīki Rāmāyaṇa by drawing profound parallels with modern management principles. It reaffirmed that ancient wisdom, when interpreted thoughtfully, continues to offer invaluable guidance for contemporary life and solve management challenges.
-              </p>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, paddingTop: 14, borderTop: `1px solid ${C.inkGhost}` }}>
-                <div style={{
-                  width: 32, height: 32, borderRadius: "50%",
-                  background: `linear-gradient(135deg, ${C.accent}, ${C.accentMid})`,
-                  display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-                }}>
-                  <span style={{ fontFamily: F.devan, fontSize: 13, color: C.white, fontWeight: 700 }}>र</span>
-                </div>
-                <div>
-                  <p style={{ fontFamily: F.body, color: C.ink, fontSize: 11, fontWeight: 700, letterSpacing: 0.5 }}>Pārāyaṇa Kartha</p>
-                  <p style={{ fontFamily: F.body, color: C.inkLight, fontSize: 10, marginTop: 1 }}>Vālmīki Rāmāyaṇa Navāha Pārāyaṇa</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+            Vyoma Rāmāyaṇa Resources
+          </h1>
+        </div>
 
-      </div>
+        {/* Right Side: Volunteer Button */}
+        <div className="lp-vol-col" style={{ flex: 1, display: "flex", justifyContent: "flex-end", minWidth: 0 }}>
+          <div onClick={() => setActivePage("Get Involved")} style={{ textDecoration: "none", flexShrink: 0 }}>
+            <button className="lp-vol" style={{
+              background: "rgba(42,26,10,0.04)", backdropFilter: "blur(4px)",
+              color: "#4A2C14", border: "none",
+              padding: "clamp(8px,1.2vw,12px) clamp(14px,2.5vw,26px)",
+              borderRadius: 100, fontFamily: "'Noto Serif',serif",
+              fontSize: "clamp(11px,1.3vw,14px)", fontWeight: 600,
+              letterSpacing: 0.3, cursor: "pointer",
+              display: "flex", alignItems: "center", gap: 6, whiteSpace: "nowrap",
+            }}>
+              ✦ Get involved in Rāmasevā
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* ══ HEX TILE GRID ═══════════════════════════════════════════════ */}
+      <main style={{
+        flex: 1, position: "relative", zIndex: 1,
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        padding: "clamp(28px,4vw,48px) clamp(16px,4vw,32px) clamp(32px,5vw,52px)",
+      }}>
+        {/* Eyebrow */}
+        <div style={{
+          textAlign: "center", marginBottom: "clamp(20px,3vw,34px)",
+          opacity: rdy ? 1 : 0,
+          animation: rdy ? "lp-up 0.45s 0.08s ease both" : "none",
+        }}>
+          <p style={{
+            fontFamily: "-apple-system, 'Segoe UI', sans-serif",
+            fontSize: "clamp(8px,1.1vw,10px)", letterSpacing: 3,
+            color: "#A87850", textTransform: "uppercase", fontWeight: 600, marginBottom: 8,
+          }}>
+            Select a section to explore
+          </p>
+          <div style={{ width: 32, height: 2, background: "#C8551A", borderRadius: 2, margin: "0 auto" }} />
+        </div>
+
+        {/* Row 1 — 5 tiles */}
+        <div style={{
+          display: "flex", gap: "clamp(8px,1.8vw,20px)",
+          justifyContent: "center", flexWrap: "wrap", width: "100%",
+        }}>
+          {row1.map((tile, i) => (
+            <HexTile key={tile.key} tile={tile}
+              onPageClick={setActivePage}
+              onModalClick={() => setShowModal(true)}
+              delay={0.12 + i * 0.07}
+            />
+          ))}
+        </div>
+
+        <div style={{ height: "clamp(20px,3.5vw,42px)" }} />
+
+        {/* Row 2 — 5 tiles */}
+        <div style={{
+          display: "flex", gap: "clamp(8px,1.8vw,20px)",
+          justifyContent: "center", flexWrap: "wrap", width: "100%",
+        }}>
+          {row2.map((tile, i) => (
+            <HexTile key={tile.key} tile={tile}
+              onPageClick={setActivePage}
+              onModalClick={() => setShowModal(true)}
+              delay={0.47 + i * 0.07}
+            />
+          ))}
+        </div>
+
+
+      </main>
+
+      {/* ══ WHATSAPP MODAL ══════════════════════════════════════════════ */}
+      {showModal && <WhatsAppModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }
